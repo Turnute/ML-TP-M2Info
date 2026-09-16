@@ -35,6 +35,8 @@ print(jeu.pic)
 def nombre_situation(jeu):
     return hash(jeu.pic.tobytes())
 
+situation_etudiee = [nombre_situation(jeu)]
+
 def pic_vide(indice_pic, jeu):
     check_nb_palet = jeu.nombre_palet[indice_pic] == 0
     check_valeurs_pic = jeu.pic[indice_pic, 0] == 0
@@ -47,6 +49,7 @@ def regle_jeu(pic1, pic2, jeu): # On déplace de pic1 vers pic2
         return jeu.pic[pic1, jeu.nombre_palet[pic1] - 1] < jeu.pic[pic2, jeu.nombre_palet[pic2] - 1] or pic_vide(pic2, jeu)
 
 def effectuer_deplacement(pic1, pic2, jeu): # On déplace de pic1 vers pic2
+    # pic1 et pc2 sont des indices de pics (0, 1 ou 2)
     if regle_jeu(pic1, pic2, jeu):
         # obtenir le palet à déplacer
         palet = jeu.pic[pic1, jeu.nombre_palet[pic1] - 1]
@@ -73,7 +76,7 @@ def situation_non_vue(pic1, pic2, jeu, situation_etudiee):
     return situation not in situation_etudiee
 
 cmpt = 0
-situation_etudiee = [nombre_situation(jeu)]
+
 
 while cmpt < 100 and nombre_situation(jeu) != nombre_situation(jeu_final):
     pic1, pic2 = 0, 0

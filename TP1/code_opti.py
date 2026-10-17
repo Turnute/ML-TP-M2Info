@@ -75,27 +75,33 @@ def situation_non_vue(pic1, pic2, jeu, situation_etudiee):
     situation = nombre_situation(jeu_temp)
     return situation not in situation_etudiee
 
+def prolonge_solution(jeu, pic):
+    # vérifie si un déplacement de pic vers le dernier pic prolonge la solution
+    palet_deplace = jeu.pic[pic, jeu.nombre_palet[pic] - 1]
+    palet_destination = jeu.pic[2, jeu.nombre_palet[2] - 1]
+    return palet_destination == 0 or palet_deplace == palet_destination - 1
+
 cmpt = 0
 
 
 while cmpt < 100 and nombre_situation(jeu) != nombre_situation(jeu_final):
     pic1, pic2 = 0, 0
     # selectionne une regle eligible
-    if regle_jeu(0, 2, jeu) and situation_non_vue(0, 2, jeu, situation_etudiee):
+    if regle_jeu(0, 2, jeu) and situation_non_vue(0, 2, jeu, situation_etudiee) and prolonge_solution(jeu, 0):
         pic1 = 0
         pic2 = 2
     elif regle_jeu(0, 1, jeu) and situation_non_vue(0, 1, jeu, situation_etudiee):
         pic1 = 0
         pic2 = 1
-    elif regle_jeu(1, 2, jeu) and situation_non_vue(1, 2, jeu, situation_etudiee):
+    elif regle_jeu(1, 0, jeu) and situation_non_vue(1, 0, jeu, situation_etudiee):
+        pic1 = 1
+        pic2 = 0
+    elif regle_jeu(1, 2, jeu) and situation_non_vue(1, 2, jeu, situation_etudiee) and prolonge_solution(jeu, 1):
         pic1 = 1
         pic2 = 2
     elif regle_jeu(2, 1, jeu) and situation_non_vue(2, 1, jeu, situation_etudiee):
         pic1 = 2
         pic2 = 1
-    elif regle_jeu(1, 0, jeu) and situation_non_vue(1, 0, jeu, situation_etudiee):
-        pic1 = 1
-        pic2 = 0
     else:
         print("Aucun déplacement possible ou toutes les situations ont été vues.")
         break

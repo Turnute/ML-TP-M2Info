@@ -33,7 +33,11 @@ print("Situation initiale :")
 print(jeu.pic)
 
 def nombre_situation(jeu):
-    return hash(jeu.pic.tobytes())
+    chaine = ""
+    for pile in range(2, -1, -1):
+        for palet in (3,2,1):
+            chaine += "1" if palet in jeu.pic[pile] else "0"
+    return int(chaine, 2)
 
 situation_etudiee = [nombre_situation(jeu)]
 
@@ -46,7 +50,10 @@ def regle_jeu(pic1, pic2, jeu): # On déplace de pic1 vers pic2
     if pic_vide(pic1, jeu):
         return False
     else:
-        return jeu.pic[pic1, jeu.nombre_palet[pic1] - 1] < jeu.pic[pic2, jeu.nombre_palet[pic2] - 1] or pic_vide(pic2, jeu)
+        palet1 = jeu.pic[pic1, jeu.nombre_palet[pic1] - 1]
+        palet2 = jeu.pic[pic2, jeu.nombre_palet[pic2] - 1]
+        plus_petit = palet1 < palet2
+        return plus_petit or pic_vide(pic2, jeu)
 
 def effectuer_deplacement(pic1, pic2, jeu): # On déplace de pic1 vers pic2
     # pic1 et pc2 sont des indices de pics (0, 1 ou 2)
@@ -107,7 +114,6 @@ while cmpt < 100 and nombre_situation(jeu) != nombre_situation(jeu_final):
     cmpt += 1
     
     # affiche l'etape
-    
     print(f"Étape {cmpt}:")
     print(jeu.pic)
 

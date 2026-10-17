@@ -190,8 +190,8 @@ def apprentissage_widrow(x, yd, epoch, batch_size):
 dossier_script = Path(__file__).resolve().parent
 
 # Chargement des données dans le sous-dossier ressources
-# X = np.loadtxt(dossier_script / "ressources" / "p2_d1.txt")
-X = np.loadtxt(dossier_script / "ressources" / "p2_d2.txt")
+# X = np.loadtxt(dossier_script / ".ressources" / "p2_d1.txt")
+X = np.loadtxt(dossier_script / ".ressources" / "p2_d2.txt")
 
 yd = np.concatenate((-np.ones(25), np.ones(25)))
 

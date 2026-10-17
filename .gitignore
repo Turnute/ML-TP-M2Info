@@ -1,1 +1,5 @@
-TP2/ressources/unzip
+.sujets
+TP2/.ressources
+
+*.pdf
+!TP1/rapport.pdf

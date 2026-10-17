@@ -1,5 +1,5 @@
 import math
-
+import numpy as np
 
 def perceptron_simple(x, w, active):
     result = w[0] + x[0]*w[1] + x[1]*w[2]

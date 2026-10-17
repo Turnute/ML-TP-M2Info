@@ -33,7 +33,11 @@ print("Situation initiale :")
 print(jeu.pic)
 
 def nombre_situation(jeu):
-    return hash(jeu.pic.tobytes())
+    chaine = ""
+    for pile in range(2, -1, -1):
+        for palet in (3,2,1):
+            chaine += "1" if palet in jeu.pic[pile] else "0"
+    return int(chaine, 2)
 
 situation_etudiee = [nombre_situation(jeu)]
 

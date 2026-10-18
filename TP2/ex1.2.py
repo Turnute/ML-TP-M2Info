@@ -208,7 +208,7 @@ def test_fichier_donnees(X, batch_size):
     plt.grid()
     plt.tight_layout()
     plt.show()
-def moyenne_epoques(X, batch_size, iterations=10000):
+def moyenne_epoques(X, yd, batch_size, iterations=10000):
     total_ep = 0
 
     for _ in range(iterations):

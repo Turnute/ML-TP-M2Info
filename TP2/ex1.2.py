@@ -7,6 +7,15 @@ from pathlib import Path
 
 alpha = 0.1
 
+# Perceptron défini à l'exercice 1.1
+def perceptron_simple(x, w, active):
+    result = w[0] + x[0]*w[1] + x[1]*w[2]
+
+    if active == 0:
+        return np.sign(result)
+    elif active == 1:
+        return np.tanh(result)
+    return
 
 # Fonction d'affichage
 def afficher_epoque(x, yd, w, epoque, epoch, cmpt):
@@ -42,17 +51,6 @@ def afficher_epoque(x, yd, w, epoque, epoch, cmpt):
     if cmpt == 0 or epoque == epoch:
         plt.tight_layout()
         plt.show()
-
-
-# Perceptron défini à l'exercice 1.1
-def perceptron_simple(x, w, active):
-    result = w[0] + x[0]*w[1] + x[1]*w[2]
-
-    if active == 0:
-        return np.sign(result)
-    elif active == 1:
-        return np.tanh(result)
-    return
 
 
 # Première version sans batch_size (une époque traite tout le jeu de données)
@@ -159,32 +157,65 @@ def apprentissage_widrow(x, yd, epoch, batch_size):
     return w, erreur[:i+1]
 
 
-# # TEST : OU logique
+# ==== TESTS ====
+def test_ou_logique():
+    # Table de vérité du OU logique
+    x = np.array([
+        [0, 0, 1, 1],
+        [0, 1, 0, 1]
+    ])
 
-# # Table de vérité du OU logique
-# x = np.array([
-#     [0, 0, 1, 1],
-#     [0, 1, 0, 1]
-# ])
+    yd = np.array([-1, 1, 1, 1])
 
-# yd = np.array([-1, 1, 1, 1])
+    # Pour reproduire le même test
+    random.seed(0)
+    np.random.seed(0)
 
-# # Pour reproduire le même test
-# random.seed(0)
-# np.random.seed(0)
+    # Apprentissage
+    w, erreur = apprentissage_widrow(x, yd, 15, 2)
 
-# # Apprentissage
-# w, erreur = apprentissage_widrow(x, yd, 15, 2)
+    print("Poids finaux :", w)
+    print("Erreurs par époque :", erreur)
 
-# # Pour tester sans batch_size à la place :
-# # w, erreur = apprentissage_widrow_no_batch(x, yd, 15)
+    # Vérification des prédictions
+    for j in range(yd.size):
+        print(x[:, j], "=>", perceptron_simple(x[:, j], w, 0))
+def test_fichier_donnees(X, batch_size):
 
-# print("Poids finaux :", w)
-# print("Erreurs par époque :", erreur)
+    # Création des étiquettes correspondantes
+    yd = np.concatenate((-np.ones(25), np.ones(25)))
 
-# # Vérification des prédictions
-# for j in range(yd.size):
-#     print(x[:, j], "=>", perceptron_simple(x[:, j], w, 0))
+    # Pour reproduire le même test
+    random.seed(0)
+    np.random.seed(0)
+
+    # Apprentissage
+    w, erreur = apprentissage_widrow(X, yd, 15, batch_size)
+
+    print("Poids finaux :", w)
+    print("Erreurs par époque :", erreur)
+
+    # Numéros des époques réellement effectuées
+    epoques = np.arange(1, len(erreur) + 1)
+
+    plt.figure("Évolution de l'erreur", figsize=(8, 5))
+    plt.plot(epoques, erreur, marker="o", color="blue")
+
+    plt.xlabel("Époque")
+    plt.ylabel("Somme des erreurs quadratiques")
+    plt.title("Évolution de l'erreur pendant l'apprentissage")
+    plt.xticks(epoques)
+    plt.grid()
+    plt.tight_layout()
+    plt.show()
+def moyenne_epoques(X, batch_size, iterations=10000):
+    total_ep = 0
+
+    for _ in range(iterations):
+        w, erreur = apprentissage_widrow(X, yd, 15, batch_size)
+        total_ep += len(erreur)
+
+    print("Nombre moyen d'époques par apprentissage :", total_ep / iterations)
 
 # Dossier contenant ce fichier Python
 dossier_script = Path(__file__).resolve().parent
@@ -192,35 +223,4 @@ dossier_script = Path(__file__).resolve().parent
 # Chargement des données dans le sous-dossier ressources
 # X = np.loadtxt(dossier_script / ".ressources" / "p2_d1.txt")
 X = np.loadtxt(dossier_script / ".ressources" / "p2_d2.txt")
-
-yd = np.concatenate((-np.ones(25), np.ones(25)))
-
-w, erreur = apprentissage_widrow(X, yd, 15, X.size)
-
-print("Poids finaux :", w)
-print("Erreurs par époque :", erreur)
-
-# Numéros des époques réellement effectuées
-epoques = np.arange(1, len(erreur) + 1)
-
-plt.figure("Évolution de l'erreur", figsize=(8, 5))
-plt.plot(epoques, erreur, marker="o", color="blue")
-
-plt.xlabel("Époque")
-plt.ylabel("Somme des erreurs quadratiques")
-plt.title("Évolution de l'erreur pendant l'apprentissage")
-plt.xticks(epoques)
-plt.grid()
-plt.tight_layout()
-plt.show()
-
-# MOYENNE EPOQUES
-
-# iterations = 10000
-# total_ep = 0
-
-# for _ in range(iterations):
-#     w, erreur = apprentissage_widrow(X, yd, 15, yd.size)
-#     total_ep += len(erreur)
-
-# print("Nombre moyen d'époques par apprentissage :", total_ep / iterations)
+test_fichier_donnees(X, 15)

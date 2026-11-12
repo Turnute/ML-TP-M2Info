@@ -25,7 +25,7 @@ class Action(IntEnum):
     LEFT = 3
 
 R_case = -1     # Récompense d'une case vide
-R_case2 = -5    # Récompense d'une case hors du plateau
+R_case2 = -1    # Récompense d'une case hors du plateau
 R_dragon = -10  # Récompense d'une case dragon
 R_tresor = 20   # Récompense d'une case trésor
 

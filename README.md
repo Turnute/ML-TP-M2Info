@@ -6,6 +6,7 @@ Travaux pratiques réalisés à l’Université de Poitiers durant l’année 20
 
 - **TP1 — Système expert** : résolution des tours de Hanoï par un moteur d’inférence en chaînage avant, puis optimisation des règles.
 - **TP2 — Réseaux de neurones** : perceptron simple, apprentissage de Widrow-Hoff, perceptron multicouche et classification d’images.
+- **TP3 — Apprentissage par renforcement** : Q-learning, Deep Q-learning.
 
 Le dépôt est complété au fur et à mesure de l’avancement des exercices.
 
